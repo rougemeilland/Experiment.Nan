@@ -1,4 +1,8 @@
-# Runtime environment
+# 1. Overview
+
+This article presents the results of an investigation into the actual behavior of the Max/Min/MaxNumber/MinNumber methods in .NET.
+
+# 2. Runtime environment
 
 | Property | Value |
 |:---|:---:|
@@ -21,12 +25,25 @@
 | Avx512BW.IsSupported | False |
 | Avx512Vbmi.IsSupported | False |
 | Avx10v1.IsSupported | False |
+# 3. Explanatory notes
 
-# double.Max(double, double)
+- "2.12e-314" is a positive subnormal number.
+- "-2.12e-314" is a negative subnormal number.
+- qNaN(+1) is a "quiet NaN" whose sign bit is positive and whose mantissa is 1.
+- qNaN(+2) is a "quiet NaN" whose sign bit is positive and whose mantissa is 2.
+- qNaN(-1) is a "quiet NaN" whose sign bit is negative and whose mantissa is 1.
+- qNaN(-2) is a "quiet NaN" whose sign bit is negative and whose mantissa is 2.
+- sNaN(+1) is a "signaling NaN" whose sign bit is positive and whose mantissa is 1.
+- sNaN(+2) is a "signaling NaN" whose sign bit is positive and whose mantissa is 2.
+- sNaN(-1) is a "signaling NaN" whose sign bit is negative and whose mantissa is 1.
+- sNaN(-2) is a "signaling NaN" whose sign bit is negative and whose mantissa is 2.
+
+
+# 4. For &quot;double.Max(double, double)&quot;
 
 <table>
-<tr><th colspan="2"/><th colspan="16">right</th></tr>
-<tr><th colspan="2"/><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
+<tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
+<tr><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
 <tr><th rowspan="16">left</th><th>+∞</th><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
 <tr><th>123.00</th><td> +∞</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
 <tr><th>2.12e-314</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
@@ -45,11 +62,11 @@
 <tr><th>sNaN(-2)</th><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td></tr>
 </table>
 
-# double.Min(double, double)
+# 5. For &quot;double.Min(double, double)&quot;
 
 <table>
-<tr><th colspan="2"/><th colspan="16">right</th></tr>
-<tr><th colspan="2"/><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
+<tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
+<tr><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
 <tr><th rowspan="16">left</th><th>+∞</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
 <tr><th>123.00</th><td> 123.00</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
 <tr><th>2.12e-314</th><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
@@ -68,11 +85,11 @@
 <tr><th>sNaN(-2)</th><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td></tr>
 </table>
 
-# double.MaxNumber(double, double)
+# 6. For &quot;double.MaxNumber(double, double)&quot;
 
 <table>
-<tr><th colspan="2"/><th colspan="16">right</th></tr>
-<tr><th colspan="2"/><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
+<tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
+<tr><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
 <tr><th rowspan="16">left</th><th>+∞</th><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td></tr>
 <tr><th>123.00</th><td> +∞</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td></tr>
 <tr><th>2.12e-314</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td></tr>
@@ -91,11 +108,11 @@
 <tr><th>sNaN(-2)</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td></tr>
 </table>
 
-# double.MinNumber(double, double)
+# 7. For &quot;double.MinNumber(double, double)&quot;
 
 <table>
-<tr><th colspan="2"/><th colspan="16">right</th></tr>
-<tr><th colspan="2"/><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
+<tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
+<tr><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
 <tr><th rowspan="16">left</th><th>+∞</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td></tr>
 <tr><th>123.00</th><td> 123.00</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td></tr>
 <tr><th>2.12e-314</th><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td></tr>
@@ -114,11 +131,11 @@
 <tr><th>sNaN(-2)</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td></tr>
 </table>
 
-# Vector.Max(Vector<double>, Vector<double>)
+# 8. For &quot;Vector.Max(Vector&lt;double&gt;, Vector&lt;double&gt;)&quot;
 
 <table>
-<tr><th colspan="2"/><th colspan="16">right</th></tr>
-<tr><th colspan="2"/><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
+<tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
+<tr><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
 <tr><th rowspan="16">left</th><th>+∞</th><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
 <tr><th>123.00</th><td> +∞</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
 <tr><th>2.12e-314</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
@@ -137,11 +154,11 @@
 <tr><th>sNaN(-2)</th><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td></tr>
 </table>
 
-# Vector.Min(Vector<double>, Vector<double>)
+# 9. For &quot;Vector.Min(Vector&lt;double&gt;, Vector&lt;double&gt;)&quot;
 
 <table>
-<tr><th colspan="2"/><th colspan="16">right</th></tr>
-<tr><th colspan="2"/><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
+<tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
+<tr><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
 <tr><th rowspan="16">left</th><th>+∞</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
 <tr><th>123.00</th><td> 123.00</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
 <tr><th>2.12e-314</th><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> qNaN(+1)</td><td> qNaN(+2)</td><td> qNaN(-1)</td><td> qNaN(-2)</td><td> sNaN(+1)</td><td> sNaN(+2)</td><td> sNaN(-1)</td><td> sNaN(-2)</td></tr>
@@ -160,11 +177,11 @@
 <tr><th>sNaN(-2)</th><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td></tr>
 </table>
 
-# Vector.MaxNumber(Vector<double>, Vector<double>)
+# 10. For &quot;Vector.MaxNumber(Vector&lt;double&gt;, Vector&lt;double&gt;)&quot;
 
 <table>
-<tr><th colspan="2"/><th colspan="16">right</th></tr>
-<tr><th colspan="2"/><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
+<tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
+<tr><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
 <tr><th rowspan="16">left</th><th>+∞</th><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td></tr>
 <tr><th>123.00</th><td> +∞</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td></tr>
 <tr><th>2.12e-314</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td></tr>
@@ -183,11 +200,11 @@
 <tr><th>sNaN(-2)</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td><td> sNaN(-2)</td></tr>
 </table>
 
-# Vector.MinNumber(Vector<double>, Vector<double>)
+# 11. For &quot;Vector.MinNumber(Vector&lt;double&gt;, Vector&lt;double&gt;)&quot;
 
 <table>
-<tr><th colspan="2"/><th colspan="16">right</th></tr>
-<tr><th colspan="2"/><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
+<tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
+<tr><th>+∞</th><th>123.00</th><th>2.12e-314</th><th>+0</th><th>-0</th><th>-2.12e-314</th><th>-123.00</th><th>-∞</th><th>qNaN(+1)</th><th>qNaN(+2)</th><th>qNaN(-1)</th><th>qNaN(-2)</th><th>sNaN(+1)</th><th>sNaN(+2)</th><th>sNaN(-1)</th><th>sNaN(-2)</th></tr>
 <tr><th rowspan="16">left</th><th>+∞</th><td> +∞</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td><td> +∞</td></tr>
 <tr><th>123.00</th><td> 123.00</td><td> 123.00</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td><td> 123.00</td></tr>
 <tr><th>2.12e-314</th><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> +0</td><td> -0</td><td> -2.12e-314</td><td> -123.00</td><td> -∞</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td><td> 2.12e-314</td></tr>

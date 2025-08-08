@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Buffers.Binary;
 using System.Globalization;
 using System.Linq;
@@ -9,6 +11,8 @@ using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.Wasm;
 using System.Runtime.Intrinsics.X86;
+using System.Text.Encodings.Web;
+using System.Web;
 
 namespace Experiment.FloatingMinMax
 {
@@ -61,7 +65,11 @@ namespace Experiment.FloatingMinMax
             System.Diagnostics.Debug.Assert(double.IsNaN(_sNaN3));
             System.Diagnostics.Debug.Assert(double.IsNaN(_sNaN4));
 
-            Console.WriteLine("# Runtime environment");
+            Console.WriteLine("# 1. Overview");
+            Console.WriteLine();
+            Console.WriteLine("This article presents the results of an investigation into the actual behavior of the Max/Min/MaxNumber/MinNumber methods in .NET.");
+            Console.WriteLine();
+            Console.WriteLine("# 2. Runtime environment");
             Console.WriteLine();
             Console.WriteLine("| Property | Value |");
             Console.WriteLine("|:---|:---:|");
@@ -86,39 +94,53 @@ namespace Experiment.FloatingMinMax
 #if NET9_0_OR_GREATER   
             Console.WriteLine(FormatExpressionForTable(Avx10v1.IsSupported));
 #endif
+            Console.WriteLine("# 3. Explanatory notes");
             Console.WriteLine();
-            MakeTable("double.Max(double, double)", double.Max);
+            Console.WriteLine("- \"2.12e-314\" is a positive subnormal number.");
+            Console.WriteLine("- \"-2.12e-314\" is a negative subnormal number.");
+            Console.WriteLine("- qNaN(+1) is a \"quiet NaN\" whose sign bit is positive and whose mantissa is 1.");
+            Console.WriteLine("- qNaN(+2) is a \"quiet NaN\" whose sign bit is positive and whose mantissa is 2.");
+            Console.WriteLine("- qNaN(-1) is a \"quiet NaN\" whose sign bit is negative and whose mantissa is 1.");
+            Console.WriteLine("- qNaN(-2) is a \"quiet NaN\" whose sign bit is negative and whose mantissa is 2.");
+            Console.WriteLine("- sNaN(+1) is a \"signaling NaN\" whose sign bit is positive and whose mantissa is 1.");
+            Console.WriteLine("- sNaN(+2) is a \"signaling NaN\" whose sign bit is positive and whose mantissa is 2.");
+            Console.WriteLine("- sNaN(-1) is a \"signaling NaN\" whose sign bit is negative and whose mantissa is 1.");
+            Console.WriteLine("- sNaN(-2) is a \"signaling NaN\" whose sign bit is negative and whose mantissa is 2.");
+            Console.WriteLine();
 
             Console.WriteLine();
-            MakeTable("double.Min(double, double)", double.Min);
+            MakeTable("4. For \"double.Max(double, double)\"", double.Max);
 
             Console.WriteLine();
-            MakeTable("double.MaxNumber(double, double)", double.MaxNumber);
+            MakeTable("5. For \"double.Min(double, double)\"", double.Min);
 
             Console.WriteLine();
-            MakeTable("double.MinNumber(double, double)", double.MinNumber);
+            MakeTable("6. For \"double.MaxNumber(double, double)\"", double.MaxNumber);
+
+            Console.WriteLine();
+            MakeTable("7. For \"double.MinNumber(double, double)\"", double.MinNumber);
 
             Console.WriteLine();
             MakeTable(
-                "Vector.Max(Vector<double>, Vector<double>)",
+                "8. For \"Vector.Max(Vector<double>, Vector<double>)\"",
                 (left, right) => Vector.Max(new Vector<double>(left), new Vector<double>(right))[0]);
 
             Console.WriteLine();
             MakeTable(
-                "Vector.Min(Vector<double>, Vector<double>)",
+                "9. For \"Vector.Min(Vector<double>, Vector<double>)\"",
                 (left, right) => Vector.Min(new Vector<double>(left), new Vector<double>(right))[0]);
 
 #if NET9_0_OR_GREATER   
             Console.WriteLine();
             MakeTable(
-                "Vector.MaxNumber(Vector<double>, Vector<double>)",
+                "10. For \"Vector.MaxNumber(Vector<double>, Vector<double>)\"",
                 (left, right) => Vector.MaxNumber(new Vector<double>(left), new Vector<double>(right))[0]);
 #endif
 
 #if NET9_0_OR_GREATER   
             Console.WriteLine();
             MakeTable(
-                "Vector.MinNumber(Vector<double>, Vector<double>)",
+                "11. For \"Vector.MinNumber(Vector<double>, Vector<double>)\"",
                 (left, right) => Vector.MinNumber(new Vector<double>(left), new Vector<double>(right))[0]);
 #endif
 
@@ -150,17 +172,16 @@ namespace Experiment.FloatingMinMax
                     _sNaN4
                 };
 
-            Console.WriteLine($"# {title}");
+            Console.WriteLine($"# {HttpUtility.HtmlEncode(title)}");
             Console.WriteLine();
 
             Console.WriteLine("<table>");
             Console.Write("<tr>");
-            Console.Write("<th colspan=\"2\"/>");
+            Console.Write("<th colspan=\"2\" rowspan=\"2\"/>");
             Console.Write($"<th colspan=\"{values.Length}\">right</th>");
             Console.WriteLine("</tr>");
 
             Console.Write("<tr>");
-            Console.Write("<th colspan=\"2\"/>");
             foreach (var right in values)
                 Console.Write($"<th>{ToSymbolString(right)}</th>");
             Console.WriteLine("</tr>");
