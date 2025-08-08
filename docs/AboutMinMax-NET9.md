@@ -31,14 +31,14 @@ This article presents the results of an investigation into the actual behavior o
 
 - `2.12e-314` is a positive subnormal number.
 - `-2.12e-314` is a negative subnormal number.
-- `qNaN(+1)` is a "quiet NaN" whose sign bit is positive and whose mantissa is 1.
-- `qNaN(+2)` is a "quiet NaN" whose sign bit is positive and whose mantissa is 2.
-- `qNaN(-1)` is a "quiet NaN" whose sign bit is negative and whose mantissa is 1.
-- `qNaN(-2)` is a "quiet NaN" whose sign bit is negative and whose mantissa is 2.
-- `sNaN(+1)` is a "signaling NaN" whose sign bit is positive and whose mantissa is 1.
-- `sNaN(+2)` is a "signaling NaN" whose sign bit is positive and whose mantissa is 2.
-- `sNaN(-1)` is a "signaling NaN" whose sign bit is negative and whose mantissa is 1.
-- `sNaN(-2)` is a "signaling NaN" whose sign bit is negative and whose mantissa is 2.
+- `qNaN(+1)` is a "quiet NaN" whose sign bit is positive and whose low-order 51 bits of the mantissa are 1.
+- `qNaN(+2)` is a "quiet NaN" whose sign bit is positive and whose low-order 51 bits of the mantissa are 2.
+- `qNaN(-1)` is a "quiet NaN" whose sign bit is negative and whose low-order 51 bits of the mantissa are 1.
+- `qNaN(-2)` is a "quiet NaN" whose sign bit is negative and whose low-order 51 bits of the mantissa are 2.
+- `sNaN(+1)` is a "signaling NaN" whose sign bit is positive and whose low-order 51 bits of the mantissa are 1.
+- `sNaN(+2)` is a "signaling NaN" whose sign bit is positive and whose low-order 51 bits of the mantissa are 2.
+- `sNaN(-1)` is a "signaling NaN" whose sign bit is negative and whose low-order 51 bits of the mantissa are 1.
+- `sNaN(-2)` is a "signaling NaN" whose sign bit is negative and whose low-order 51 bits of the mantissa are 2.
 
 
 # 4. For `double.Max(double, double)`

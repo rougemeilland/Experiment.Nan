@@ -94,14 +94,14 @@ namespace Experiment.FloatingMinMax
             Console.WriteLine();
             Console.WriteLine("- `2.12e-314` is a positive subnormal number.");
             Console.WriteLine("- `-2.12e-314` is a negative subnormal number.");
-            Console.WriteLine("- `qNaN(+1)` is a \"quiet NaN\" whose sign bit is positive and whose mantissa is 1.");
-            Console.WriteLine("- `qNaN(+2)` is a \"quiet NaN\" whose sign bit is positive and whose mantissa is 2.");
-            Console.WriteLine("- `qNaN(-1)` is a \"quiet NaN\" whose sign bit is negative and whose mantissa is 1.");
-            Console.WriteLine("- `qNaN(-2)` is a \"quiet NaN\" whose sign bit is negative and whose mantissa is 2.");
-            Console.WriteLine("- `sNaN(+1)` is a \"signaling NaN\" whose sign bit is positive and whose mantissa is 1.");
-            Console.WriteLine("- `sNaN(+2)` is a \"signaling NaN\" whose sign bit is positive and whose mantissa is 2.");
-            Console.WriteLine("- `sNaN(-1)` is a \"signaling NaN\" whose sign bit is negative and whose mantissa is 1.");
-            Console.WriteLine("- `sNaN(-2)` is a \"signaling NaN\" whose sign bit is negative and whose mantissa is 2.");
+            Console.WriteLine("- `qNaN(+1)` is a \"quiet NaN\" whose sign bit is positive and whose low-order 51 bits of the mantissa are 1.");
+            Console.WriteLine("- `qNaN(+2)` is a \"quiet NaN\" whose sign bit is positive and whose low-order 51 bits of the mantissa are 2.");
+            Console.WriteLine("- `qNaN(-1)` is a \"quiet NaN\" whose sign bit is negative and whose low-order 51 bits of the mantissa are 1.");
+            Console.WriteLine("- `qNaN(-2)` is a \"quiet NaN\" whose sign bit is negative and whose low-order 51 bits of the mantissa are 2.");
+            Console.WriteLine("- `sNaN(+1)` is a \"signaling NaN\" whose sign bit is positive and whose low-order 51 bits of the mantissa are 1.");
+            Console.WriteLine("- `sNaN(+2)` is a \"signaling NaN\" whose sign bit is positive and whose low-order 51 bits of the mantissa are 2.");
+            Console.WriteLine("- `sNaN(-1)` is a \"signaling NaN\" whose sign bit is negative and whose low-order 51 bits of the mantissa are 1.");
+            Console.WriteLine("- `sNaN(-2)` is a \"signaling NaN\" whose sign bit is negative and whose low-order 51 bits of the mantissa are 2.");
             Console.WriteLine();
 
             Console.WriteLine();
