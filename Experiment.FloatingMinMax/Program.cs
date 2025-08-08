@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Buffers.Binary;
 using System.Globalization;
-using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.Wasm;
 using System.Runtime.Intrinsics.X86;
-using System.Text.Encodings.Web;
 using System.Web;
 
 namespace Experiment.FloatingMinMax
@@ -65,6 +59,7 @@ namespace Experiment.FloatingMinMax
             System.Diagnostics.Debug.Assert(double.IsNaN(_sNaN3));
             System.Diagnostics.Debug.Assert(double.IsNaN(_sNaN4));
 
+            Console.WriteLine("<link href=\"AboutMinMax.css\" rel=\"stylesheet\"></link>");
             Console.WriteLine("# 1. Overview");
             Console.WriteLine();
             Console.WriteLine("This article presents the results of an investigation into the actual behavior of the Max/Min/MaxNumber/MinNumber methods in .NET.");
@@ -94,6 +89,7 @@ namespace Experiment.FloatingMinMax
 #if NET9_0_OR_GREATER   
             Console.WriteLine(FormatExpressionForTable(Avx10v1.IsSupported));
 #endif
+            Console.WriteLine();
             Console.WriteLine("# 3. Explanatory notes");
             Console.WriteLine();
             Console.WriteLine("- `2.12e-314` is a positive subnormal number.");
@@ -226,38 +222,43 @@ namespace Experiment.FloatingMinMax
         private static string ToSymbolString(double value)
         {
             if (EqualBinary(value, _positiveInfiniry))
-                return "`+∞`";
+                return Encode("+∞");
             if (EqualBinary(value, _negativeInfiniry))
-                return "`-∞`";
+                return Encode("-∞");
             if (EqualBinary(value, _positiveSubNormal))
-                return $"`{value.ToString("e2", CultureInfo.InvariantCulture)}`";
+                return Encode(value.ToString("e2", CultureInfo.InvariantCulture));
             if (EqualBinary(value, _negativeSubNormal))
-                return $"`{value.ToString("e2", CultureInfo.InvariantCulture)}`";
+                return Encode(value.ToString("e2", CultureInfo.InvariantCulture));
             if (EqualBinary(value, _positiveZero))
-                return "`+0`";
+                return Encode("+0");
             if (EqualBinary(value, _negativeZero))
-                return "`-0`";
+                return Encode("-0");
             if (EqualBinary(value, _qNaN1))
-                return "`qNaN(+1)`";
+                return Encode("qNaN(+1)");
             if (EqualBinary(value, _qNaN2))
-                return "`qNaN(+2)`";
+                return Encode("qNaN(+2)");
             if (EqualBinary(value, _qNaN3))
-                return "`qNaN(-1)`";
+                return Encode("qNaN(-1)");
             if (EqualBinary(value, _qNaN4))
-                return "`qNaN(-2)`";
+                return Encode("qNaN(-2)");
             if (EqualBinary(value, _sNaN1))
-                return "`sNaN(+1)`";
+                return Encode("sNaN(+1)");
             if (EqualBinary(value, _sNaN2))
-                return "`sNaN(+2)`";
+                return Encode("sNaN(+2)");
             if (EqualBinary(value, _sNaN3))
-                return "`sNaN(-1)`";
+                return Encode("sNaN(-1)");
             if (EqualBinary(value, _sNaN4))
-                return "`sNaN(-2)`";
+                return Encode("sNaN(-2)");
             if (double.IsNormal(value))
-                return "`" + value.ToString("f2", CultureInfo.InvariantCulture) + "`";
+                return Encode(value.ToString("f2", CultureInfo.InvariantCulture));
             if (double.IsNaN(value))
-                return "`NaN`";
-            return "???";
+                return Encode("NaN");
+            return Encode("???");
+
+            static string Encode(string text)
+            {
+                return HttpUtility.HtmlEncode(text);
+            }
         }
     }
 }
