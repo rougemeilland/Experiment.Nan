@@ -1,4 +1,5 @@
 <link href="AboutMinMax.css" rel="stylesheet"></link>
+
 # 1. Overview
 
 This article presents the results of an investigation into the actual behavior of the Max/Min/MaxNumber/MinNumber methods in .NET.
@@ -9,7 +10,7 @@ This article presents the results of an investigation into the actual behavior o
 |:---|:---:|
 | OS | Microsoft Windows 10.0.19045 |
 | Architecture | X64 |
-| .Net runtime | .NET 8.0.19 |
+| .NET Runtime | .NET 8.0.19 |
 | `AdvSimd.IsSupported` | `False` |
 | `PackedSimd.IsSupported` | `False` |
 | `Sse.IsSupported` | `True` |
@@ -63,7 +64,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 5. For `double.Min(double, double)&quot;
+# 5. For `double.Min(double, double)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
@@ -132,7 +133,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>+∞</td><td>123.00</td><td>2.12e-314</td><td>+0</td><td>-0</td><td>-2.12e-314</td><td>-123.00</td><td>-∞</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 8. For `Vector.Max(Vector&lt;double&gt;, Vector&lt;double&gt;)`
+# 8. For `Vector.Max(Vector<double>, Vector<double>)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
@@ -155,7 +156,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>+∞</td><td>123.00</td><td>2.12e-314</td><td>+0</td><td>-0</td><td>-2.12e-314</td><td>-123.00</td><td>-∞</td><td>qNaN(+1)</td><td>qNaN(+2)</td><td>qNaN(-1)</td><td>qNaN(-2)</td><td>sNaN(+1)</td><td>sNaN(+2)</td><td>sNaN(-1)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 9. For `Vector.Min(Vector&lt;double&gt;, Vector&lt;double&gt;)`
+# 9. For `Vector.Min(Vector<double>, Vector<double>)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
