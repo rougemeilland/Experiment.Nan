@@ -1,4 +1,5 @@
 <link href="AboutMinMax.css" rel="stylesheet"></link>
+
 # 1. Overview
 
 This article presents the results of an investigation into the actual behavior of the Max/Min/MaxNumber/MinNumber methods in .NET.
@@ -40,7 +41,7 @@ This article presents the results of an investigation into the actual behavior o
 - `sNaN(-2)` is a "signaling NaN" whose sign bit is negative and whose low-order 51 bits of the mantissa are 2.
 
 
-# 4. For `double.Max(double, double)`
+# 4. For `double.Max(double left, double right)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
@@ -63,7 +64,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 5. For `double.Min(double, double)&quot;
+# 5. For `double.Min(double left, double right)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
@@ -86,7 +87,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 6. For `double.MaxNumber(double, double)`
+# 6. For `double.MaxNumber(double left, double right)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
@@ -109,7 +110,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>+∞</td><td>123.00</td><td>2.12e-314</td><td>+0</td><td>-0</td><td>-2.12e-314</td><td>-123.00</td><td>-∞</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 7. For `double.MinNumber(double, double)`
+# 7. For `double.MinNumber(double left, double right)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
@@ -132,7 +133,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>+∞</td><td>123.00</td><td>2.12e-314</td><td>+0</td><td>-0</td><td>-2.12e-314</td><td>-123.00</td><td>-∞</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 8. For `Vector.Max(Vector&lt;double&gt;, Vector&lt;double&gt;)`
+# 8. For `Vector.Max(Vector<double> left, Vector<double> right)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
@@ -155,7 +156,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>+∞</td><td>123.00</td><td>2.12e-314</td><td>+0</td><td>-0</td><td>-2.12e-314</td><td>-123.00</td><td>-∞</td><td>qNaN(+1)</td><td>qNaN(+2)</td><td>qNaN(-1)</td><td>qNaN(-2)</td><td>sNaN(+1)</td><td>sNaN(+2)</td><td>sNaN(-1)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 9. For `Vector.Min(Vector&lt;double&gt;, Vector&lt;double&gt;)`
+# 9. For `Vector.Min(Vector<double> left, Vector<double> right)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>

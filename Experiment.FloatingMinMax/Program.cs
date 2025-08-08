@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.Wasm;
 using System.Runtime.Intrinsics.X86;
@@ -59,7 +60,71 @@ namespace Experiment.FloatingMinMax
             System.Diagnostics.Debug.Assert(double.IsNaN(_sNaN3));
             System.Diagnostics.Debug.Assert(double.IsNaN(_sNaN4));
 
+            //SimpleIncompatibilityCheck();
+            //ValidationOfModifiedMethods();
+            WriteDocument();
+            Console.Beep();
+            _ = Console.ReadLine();
+        }
+
+        private static void SimpleIncompatibilityCheck()
+        {
+            Console.WriteLine(Vector256.Min(Vector256.Create(1.0), Vector256.Create(double.NaN)));
+            Console.WriteLine(Vector256.Max(Vector256.Create(1.0), Vector256.Create(double.NaN)));
+            Console.WriteLine(Vector256.Min(Vector256.Create(double.NaN), Vector256.Create(1.0)));
+            Console.WriteLine(Vector256.Max(Vector256.Create(double.NaN), Vector256.Create(1.0)));
+        }
+
+        private static void ValidationOfModifiedMethods()
+        {
+            var values =
+                new[]
+                {
+                    _positiveInfiniry,
+                    _positiveNormal,
+                    _positiveSubNormal,
+                    _positiveZero,
+                    _negativeZero,
+                    _negativeSubNormal,
+                    _negativeNormal,
+                    _negativeInfiniry,
+                    _qNaN1,
+                    _qNaN2,
+                    _qNaN3,
+                    _qNaN4,
+                    _sNaN1,
+                    _sNaN2,
+                    _sNaN3,
+                    _sNaN4
+                };
+
+            foreach (var left in values)
+            {
+                foreach (var right in values)
+                {
+                    var max1 = Vector.Max(new Vector<double>(left), new Vector<double>(right))[0];
+                    var max2 = ModifiedMax(Vector256.Create(left), Vector256.Create(right))[0];
+                    if (!EqualBinary(max1, max2))
+                    {
+                        Console.WriteLine($"Vector.Max({ToSymbolString(left)}, {ToSymbolString(right)})=={ToSymbolString(max1)}");
+                        Console.WriteLine($"ModifiedMax({ToSymbolString(left)}, {ToSymbolString(right)})=={ToSymbolString(max2)}");
+                    }
+
+                    var min1 = Vector.Min(new Vector<double>(left), new Vector<double>(right))[0];
+                    var min2 = ModifiedMin(Vector256.Create(left), Vector256.Create(right))[0];
+                    if (!EqualBinary(min1, min2))
+                    {
+                        Console.WriteLine($"Vector.Min({ToSymbolString(left)}, {ToSymbolString(right)})=={ToSymbolString(min1)}");
+                        Console.WriteLine($"ModifiedMin({ToSymbolString(left)}, {ToSymbolString(right)})=={ToSymbolString(min2)}");
+                    }
+                }
+            }
+        }
+
+        private static void WriteDocument()
+        {
             Console.WriteLine("<link href=\"AboutMinMax.css\" rel=\"stylesheet\"></link>");
+            Console.WriteLine();
             Console.WriteLine("# 1. Overview");
             Console.WriteLine();
             Console.WriteLine("This article presents the results of an investigation into the actual behavior of the Max/Min/MaxNumber/MinNumber methods in .NET.");
@@ -105,44 +170,42 @@ namespace Experiment.FloatingMinMax
             Console.WriteLine();
 
             Console.WriteLine();
-            MakeTable("4. For `double.Max(double, double)`", double.Max);
+            MakeTable("4. For `double.Max(double left, double right)`", double.Max);
 
             Console.WriteLine();
-            MakeTable("5. For `double.Min(double, double)\"", double.Min);
+            MakeTable("5. For `double.Min(double left, double right)`", double.Min);
 
             Console.WriteLine();
-            MakeTable("6. For `double.MaxNumber(double, double)`", double.MaxNumber);
+            MakeTable("6. For `double.MaxNumber(double left, double right)`", double.MaxNumber);
 
             Console.WriteLine();
-            MakeTable("7. For `double.MinNumber(double, double)`", double.MinNumber);
+            MakeTable("7. For `double.MinNumber(double left, double right)`", double.MinNumber);
 
             Console.WriteLine();
             MakeTable(
-                "8. For `Vector.Max(Vector<double>, Vector<double>)`",
+                "8. For `Vector.Max(Vector<double> left, Vector<double> right)`",
                 (left, right) => Vector.Max(new Vector<double>(left), new Vector<double>(right))[0]);
 
             Console.WriteLine();
             MakeTable(
-                "9. For `Vector.Min(Vector<double>, Vector<double>)`",
+                "9. For `Vector.Min(Vector<double> left, Vector<double> right)`",
                 (left, right) => Vector.Min(new Vector<double>(left), new Vector<double>(right))[0]);
 
 #if NET9_0_OR_GREATER   
             Console.WriteLine();
             MakeTable(
-                "10. For `Vector.MaxNumber(Vector<double>, Vector<double>)`",
+                "10. For `Vector.MaxNumber(Vector<double> left, Vector<double> right)`",
                 (left, right) => Vector.MaxNumber(new Vector<double>(left), new Vector<double>(right))[0]);
 #endif
 
 #if NET9_0_OR_GREATER   
             Console.WriteLine();
             MakeTable(
-                "11. For `Vector.MinNumber(Vector<double>, Vector<double>)`",
+                "11. For `Vector.MinNumber(Vector<double> left, Vector<double> right)`",
                 (left, right) => Vector.MinNumber(new Vector<double>(left), new Vector<double>(right))[0]);
 #endif
 
             Console.WriteLine();
-            Console.Beep();
-            _ = Console.ReadLine();
         }
 
         private static void MakeTable(string title, Func<double, double, double> op)
@@ -168,7 +231,7 @@ namespace Experiment.FloatingMinMax
                     _sNaN4
                 };
 
-            Console.WriteLine($"# {HttpUtility.HtmlEncode(title)}");
+            Console.WriteLine($"# {title}");
             Console.WriteLine();
 
             Console.WriteLine("<table>");
@@ -197,6 +260,24 @@ namespace Experiment.FloatingMinMax
 
             Console.WriteLine("</table>");
         }
+
+        private static Vector256<double> ModifiedMax(Vector256<double> left, Vector256<double> right)
+            => Vector256.ConditionalSelect(
+                /*(Avx.CompareEqual(right, left)) & Vector256.LessThan(right.AsInt64(), Vector256<long>.Zero).AsDouble()
+                    |*/ Avx.CompareNotEqual(left, left)
+                    | Vector256.LessThan(right, left),
+                left,
+                right);
+
+        private static Vector256<double> ModifiedMin(Vector256<double> left, Vector256<double> right)
+            => Vector256.ConditionalSelect(
+                /*(Avx.CompareEqual(right, left)) & Vector256.LessThan(left.AsInt64(), Vector256<long>.Zero).AsDouble()
+                    |*/ Avx.CompareNotEqual(left, left)
+                    | Vector256.LessThan(left, right),
+                left,
+                right);
+
+        private static string FormatExpression(object value, [CallerArgumentExpression(nameof(value))] string? expression = null) => $"{expression} == {value}";
 
         private static string FormatExpressionForTable(object value, [CallerArgumentExpression(nameof(value))] string? expression = null) => $"| `{expression}` | `{value}` |";
 
