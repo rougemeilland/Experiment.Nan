@@ -96,51 +96,51 @@ namespace Experiment.FloatingMinMax
 #endif
             Console.WriteLine("# 3. Explanatory notes");
             Console.WriteLine();
-            Console.WriteLine("- \"2.12e-314\" is a positive subnormal number.");
-            Console.WriteLine("- \"-2.12e-314\" is a negative subnormal number.");
-            Console.WriteLine("- qNaN(+1) is a \"quiet NaN\" whose sign bit is positive and whose mantissa is 1.");
-            Console.WriteLine("- qNaN(+2) is a \"quiet NaN\" whose sign bit is positive and whose mantissa is 2.");
-            Console.WriteLine("- qNaN(-1) is a \"quiet NaN\" whose sign bit is negative and whose mantissa is 1.");
-            Console.WriteLine("- qNaN(-2) is a \"quiet NaN\" whose sign bit is negative and whose mantissa is 2.");
-            Console.WriteLine("- sNaN(+1) is a \"signaling NaN\" whose sign bit is positive and whose mantissa is 1.");
-            Console.WriteLine("- sNaN(+2) is a \"signaling NaN\" whose sign bit is positive and whose mantissa is 2.");
-            Console.WriteLine("- sNaN(-1) is a \"signaling NaN\" whose sign bit is negative and whose mantissa is 1.");
-            Console.WriteLine("- sNaN(-2) is a \"signaling NaN\" whose sign bit is negative and whose mantissa is 2.");
+            Console.WriteLine("- `2.12e-314` is a positive subnormal number.");
+            Console.WriteLine("- `-2.12e-314` is a negative subnormal number.");
+            Console.WriteLine("- `qNaN(+1)` is a \"quiet NaN\" whose sign bit is positive and whose mantissa is 1.");
+            Console.WriteLine("- `qNaN(+2)` is a \"quiet NaN\" whose sign bit is positive and whose mantissa is 2.");
+            Console.WriteLine("- `qNaN(-1)` is a \"quiet NaN\" whose sign bit is negative and whose mantissa is 1.");
+            Console.WriteLine("- `qNaN(-2)` is a \"quiet NaN\" whose sign bit is negative and whose mantissa is 2.");
+            Console.WriteLine("- `sNaN(+1)` is a \"signaling NaN\" whose sign bit is positive and whose mantissa is 1.");
+            Console.WriteLine("- `sNaN(+2)` is a \"signaling NaN\" whose sign bit is positive and whose mantissa is 2.");
+            Console.WriteLine("- `sNaN(-1)` is a \"signaling NaN\" whose sign bit is negative and whose mantissa is 1.");
+            Console.WriteLine("- `sNaN(-2)` is a \"signaling NaN\" whose sign bit is negative and whose mantissa is 2.");
             Console.WriteLine();
 
             Console.WriteLine();
-            MakeTable("4. For \"double.Max(double, double)\"", double.Max);
+            MakeTable("4. For `double.Max(double, double)`", double.Max);
 
             Console.WriteLine();
-            MakeTable("5. For \"double.Min(double, double)\"", double.Min);
+            MakeTable("5. For `double.Min(double, double)\"", double.Min);
 
             Console.WriteLine();
-            MakeTable("6. For \"double.MaxNumber(double, double)\"", double.MaxNumber);
+            MakeTable("6. For \"double.MaxNumber(double, double)`", double.MaxNumber);
 
             Console.WriteLine();
-            MakeTable("7. For \"double.MinNumber(double, double)\"", double.MinNumber);
+            MakeTable("7. For \"double.MinNumber(double, double)`", double.MinNumber);
 
             Console.WriteLine();
             MakeTable(
-                "8. For \"Vector.Max(Vector<double>, Vector<double>)\"",
+                "8. For \"Vector.Max(Vector<double>, Vector<double>)`",
                 (left, right) => Vector.Max(new Vector<double>(left), new Vector<double>(right))[0]);
 
             Console.WriteLine();
             MakeTable(
-                "9. For \"Vector.Min(Vector<double>, Vector<double>)\"",
+                "9. For \"Vector.Min(Vector<double>, Vector<double>)`",
                 (left, right) => Vector.Min(new Vector<double>(left), new Vector<double>(right))[0]);
 
 #if NET9_0_OR_GREATER   
             Console.WriteLine();
             MakeTable(
-                "10. For \"Vector.MaxNumber(Vector<double>, Vector<double>)\"",
+                "10. For \"Vector.MaxNumber(Vector<double>, Vector<double>)`",
                 (left, right) => Vector.MaxNumber(new Vector<double>(left), new Vector<double>(right))[0]);
 #endif
 
 #if NET9_0_OR_GREATER   
             Console.WriteLine();
             MakeTable(
-                "11. For \"Vector.MinNumber(Vector<double>, Vector<double>)\"",
+                "11. For \"Vector.MinNumber(Vector<double>, Vector<double>)`",
                 (left, right) => Vector.MinNumber(new Vector<double>(left), new Vector<double>(right))[0]);
 #endif
 
@@ -195,14 +195,14 @@ namespace Experiment.FloatingMinMax
                 Console.Write($"<th>{ToSymbolString(left)}</th>");
                 isFirstRow = false;
                 foreach (var right in values)
-                    Console.Write($"<td> {ToSymbolString(op(left, right))}</td>");
+                    Console.Write($"<td>{ToSymbolString(op(left, right))}</td>");
                 Console.WriteLine("</tr>");
             }
 
             Console.WriteLine("</table>");
         }
 
-        private static string FormatExpressionForTable(object value, [CallerArgumentExpression(nameof(value))] string? expression = null) => $"| {expression} | {value} |";
+        private static string FormatExpressionForTable(object value, [CallerArgumentExpression(nameof(value))] string? expression = null) => $"| `{expression}` | `{value}` |";
 
         private static (bool isNegative, ushort exp, ulong significand) DisassembleDouble(double value)
         {
@@ -226,37 +226,37 @@ namespace Experiment.FloatingMinMax
         private static string ToSymbolString(double value)
         {
             if (EqualBinary(value, _positiveInfiniry))
-                return "+∞";
+                return "`+∞`";
             if (EqualBinary(value, _negativeInfiniry))
-                return "-∞";
+                return "`-∞`";
             if (EqualBinary(value, _positiveSubNormal))
-                return $"{value.ToString("e2", CultureInfo.InvariantCulture)}";
+                return $"`{value.ToString("e2", CultureInfo.InvariantCulture)}`";
             if (EqualBinary(value, _negativeSubNormal))
-                return $"{value.ToString("e2", CultureInfo.InvariantCulture)}";
+                return $"`{value.ToString("e2", CultureInfo.InvariantCulture)}`";
             if (EqualBinary(value, _positiveZero))
-                return "+0";
+                return "`+0`";
             if (EqualBinary(value, _negativeZero))
-                return "-0";
+                return "`-0`";
             if (EqualBinary(value, _qNaN1))
-                return "qNaN(+1)";
+                return "`qNaN(+1)`";
             if (EqualBinary(value, _qNaN2))
-                return "qNaN(+2)";
+                return "`qNaN(+2)`";
             if (EqualBinary(value, _qNaN3))
-                return "qNaN(-1)";
+                return "`qNaN(-1)`";
             if (EqualBinary(value, _qNaN4))
-                return "qNaN(-2)";
+                return "`qNaN(-2)`";
             if (EqualBinary(value, _sNaN1))
-                return "sNaN(+1)";
+                return "`sNaN(+1)`";
             if (EqualBinary(value, _sNaN2))
-                return "sNaN(+2)";
+                return "`sNaN(+2)`";
             if (EqualBinary(value, _sNaN3))
-                return "sNaN(-1)";
+                return "`sNaN(-1)`";
             if (EqualBinary(value, _sNaN4))
-                return "sNaN(-2)";
+                return "`sNaN(-2)`";
             if (double.IsNormal(value))
-                return value.ToString("f2", CultureInfo.InvariantCulture);
+                return "`" + value.ToString("f2", CultureInfo.InvariantCulture) + "`";
             if (double.IsNaN(value))
-                return "NaN";
+                return "`NaN`";
             return "???";
         }
     }
