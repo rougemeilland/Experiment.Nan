@@ -135,7 +135,7 @@ namespace Experiment.FloatingMinMax
             Console.WriteLine("|:---|:---:|");
             Console.WriteLine($"| OS | {RuntimeInformation.OSDescription} |");
             Console.WriteLine($"| Architecture | {RuntimeInformation.ProcessArchitecture} |");
-            Console.WriteLine($"| .Net runtime | {RuntimeInformation.FrameworkDescription} |");
+            Console.WriteLine($"| .NET Runtime | {RuntimeInformation.FrameworkDescription} |");
             Console.WriteLine(FormatExpressionForTable(AdvSimd.IsSupported));
             Console.WriteLine(FormatExpressionForTable(PackedSimd.IsSupported));
             Console.WriteLine(FormatExpressionForTable(Sse.IsSupported));

@@ -10,7 +10,7 @@ This article presents the results of an investigation into the actual behavior o
 |:---|:---:|
 | OS | Microsoft Windows 10.0.19045 |
 | Architecture | X64 |
-| .Net runtime | .NET 9.0.8 |
+| .NET Runtime | .NET 9.0.8 |
 | `AdvSimd.IsSupported` | `False` |
 | `PackedSimd.IsSupported` | `False` |
 | `Sse.IsSupported` | `True` |
