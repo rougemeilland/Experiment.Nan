@@ -70,7 +70,7 @@ namespace Experiment.FloatingMinMax
             Console.WriteLine("|:---|:---:|");
             Console.WriteLine($"| OS | {RuntimeInformation.OSDescription} |");
             Console.WriteLine($"| Architecture | {RuntimeInformation.ProcessArchitecture} |");
-            Console.WriteLine($"| .Net runtime | {RuntimeInformation.FrameworkDescription} |");
+            Console.WriteLine($"| .NET Runtime | {RuntimeInformation.FrameworkDescription} |");
             Console.WriteLine(FormatExpressionForTable(AdvSimd.IsSupported));
             Console.WriteLine(FormatExpressionForTable(PackedSimd.IsSupported));
             Console.WriteLine(FormatExpressionForTable(Sse.IsSupported));
@@ -108,7 +108,7 @@ namespace Experiment.FloatingMinMax
             MakeTable("4. For `double.Max(double, double)`", double.Max);
 
             Console.WriteLine();
-            MakeTable("5. For `double.Min(double, double)\"", double.Min);
+            MakeTable("5. For `double.Min(double, double)`", double.Min);
 
             Console.WriteLine();
             MakeTable("6. For `double.MaxNumber(double, double)`", double.MaxNumber);
@@ -168,7 +168,7 @@ namespace Experiment.FloatingMinMax
                     _sNaN4
                 };
 
-            Console.WriteLine($"# {HttpUtility.HtmlEncode(title)}");
+            Console.WriteLine($"# {title}");
             Console.WriteLine();
 
             Console.WriteLine("<table>");
