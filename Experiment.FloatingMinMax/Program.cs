@@ -111,32 +111,32 @@ namespace Experiment.FloatingMinMax
             MakeTable("5. For `double.Min(double, double)\"", double.Min);
 
             Console.WriteLine();
-            MakeTable("6. For \"double.MaxNumber(double, double)`", double.MaxNumber);
+            MakeTable("6. For `double.MaxNumber(double, double)`", double.MaxNumber);
 
             Console.WriteLine();
-            MakeTable("7. For \"double.MinNumber(double, double)`", double.MinNumber);
+            MakeTable("7. For `double.MinNumber(double, double)`", double.MinNumber);
 
             Console.WriteLine();
             MakeTable(
-                "8. For \"Vector.Max(Vector<double>, Vector<double>)`",
+                "8. For `Vector.Max(Vector<double>, Vector<double>)`",
                 (left, right) => Vector.Max(new Vector<double>(left), new Vector<double>(right))[0]);
 
             Console.WriteLine();
             MakeTable(
-                "9. For \"Vector.Min(Vector<double>, Vector<double>)`",
+                "9. For `Vector.Min(Vector<double>, Vector<double>)`",
                 (left, right) => Vector.Min(new Vector<double>(left), new Vector<double>(right))[0]);
 
 #if NET9_0_OR_GREATER   
             Console.WriteLine();
             MakeTable(
-                "10. For \"Vector.MaxNumber(Vector<double>, Vector<double>)`",
+                "10. For `Vector.MaxNumber(Vector<double>, Vector<double>)`",
                 (left, right) => Vector.MaxNumber(new Vector<double>(left), new Vector<double>(right))[0]);
 #endif
 
 #if NET9_0_OR_GREATER   
             Console.WriteLine();
             MakeTable(
-                "11. For \"Vector.MinNumber(Vector<double>, Vector<double>)`",
+                "11. For `Vector.MinNumber(Vector<double>, Vector<double>)`",
                 (left, right) => Vector.MinNumber(new Vector<double>(left), new Vector<double>(right))[0]);
 #endif
 

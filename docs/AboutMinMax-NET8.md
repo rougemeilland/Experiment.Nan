@@ -86,7 +86,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 6. For &quot;double.MaxNumber(double, double)`
+# 6. For `double.MaxNumber(double, double)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
@@ -109,7 +109,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>+∞</td><td>123.00</td><td>2.12e-314</td><td>+0</td><td>-0</td><td>-2.12e-314</td><td>-123.00</td><td>-∞</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 7. For &quot;double.MinNumber(double, double)`
+# 7. For `double.MinNumber(double, double)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
@@ -132,7 +132,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>+∞</td><td>123.00</td><td>2.12e-314</td><td>+0</td><td>-0</td><td>-2.12e-314</td><td>-123.00</td><td>-∞</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 8. For &quot;Vector.Max(Vector&lt;double&gt;, Vector&lt;double&gt;)`
+# 8. For `Vector.Max(Vector&lt;double&gt;, Vector&lt;double&gt;)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
@@ -155,7 +155,7 @@ This article presents the results of an investigation into the actual behavior o
 <tr><th>sNaN(-2)</th><td>+∞</td><td>123.00</td><td>2.12e-314</td><td>+0</td><td>-0</td><td>-2.12e-314</td><td>-123.00</td><td>-∞</td><td>qNaN(+1)</td><td>qNaN(+2)</td><td>qNaN(-1)</td><td>qNaN(-2)</td><td>sNaN(+1)</td><td>sNaN(+2)</td><td>sNaN(-1)</td><td>sNaN(-2)</td></tr>
 </table>
 
-# 9. For &quot;Vector.Min(Vector&lt;double&gt;, Vector&lt;double&gt;)`
+# 9. For `Vector.Min(Vector&lt;double&gt;, Vector&lt;double&gt;)`
 
 <table>
 <tr><th colspan="2" rowspan="2"/><th colspan="16">right</th></tr>
