@@ -61,8 +61,8 @@ namespace Experiment.FloatingMinMax
             System.Diagnostics.Debug.Assert(double.IsNaN(_sNaN4));
 
             //SimpleIncompatibilityCheck();
-            //ValidationOfModifiedMethods();
-            WriteDocument();
+            ValidationOfModifiedMethods();
+            // WriteDocument();
             Console.Beep();
             _ = Console.ReadLine();
         }
